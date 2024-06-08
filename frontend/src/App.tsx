@@ -4,16 +4,22 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import Layout from './layout/Layout';
+import Layout from "./layout/Layout";
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Layout></Layout>} />
+        <Route path="/" element={<Layout> 
+        <p>Home Page</p>
+        </Layout>} />
+        <Route path="/search" element={<Layout> 
+        <p>Search Page</p>
+        </Layout>} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );
 };
 
-export default App
+export default App;
