@@ -5,6 +5,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export const register = async (formdata: RegisterFromData) => {
     const response = await fetch(`${API_BASE_URL}/api/users/register`, {
         method: 'POST',
+        credentials: "include",
         headers: {
             "Content-Type": "application/json",
         },
@@ -17,3 +18,15 @@ export const register = async (formdata: RegisterFromData) => {
         throw new Error(responseBody.message);
     }
 };
+
+export const validateToken = async ()=>{
+    const response = await fetch (`${API_BASE_URL}/api/auth/validate-token`, {
+        credentials: "include" // this tell the browser to send credentials with the request qhich includes the http auth cookie.
+    })
+
+    if(!response.ok){
+        throw new Error("Token invalid")
+    }
+
+    return response.json();
+}
