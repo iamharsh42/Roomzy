@@ -3,3 +3,6 @@
 /e2e-tests/node_modules
 /frontend/dist
 /backend/dist
+/frontend/.env
+/backend/.env
+/backend/.env.e2e
