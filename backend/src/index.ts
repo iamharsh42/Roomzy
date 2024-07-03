@@ -6,6 +6,7 @@ import userRoutes from './routes/users';
 import authRoutes from "./routes/auth";
 import cookieParser from "cookie-parser";
 import { cookie } from 'express-validator';
+import path from "path";
 
 mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string);
 
@@ -17,6 +18,8 @@ app.use(cors({
     origin: process.env.FRONTEND_URL,
     credentials: true,
 })) // our server will only accept and process requests from this particular URL and that URL must contain credentials.
+
+app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
