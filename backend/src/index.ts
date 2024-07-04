@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import { cookie } from 'express-validator';
 import path from "path";
 import { v2 as cloudinary } from 'cloudinary';
+import myHotelRoutes from './routes/my-hotels';
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/my-hotels", myHotelRoutes);
 
 app.listen(5000, () => {
     console.log("server running");
