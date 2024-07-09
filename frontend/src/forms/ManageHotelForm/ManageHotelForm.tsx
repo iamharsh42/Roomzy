@@ -17,9 +17,14 @@ export type HotelFormData = {
     imageFiles: FileList;
     adultCount: number;
     childCount: number;
+};
+
+type Props = {
+    onSave: (hotelFormData: FormData) => void;
+    isLoading: boolean;
 }
 
-const ManageHotelForm = () => {
+const ManageHotelForm = ({ onSave, isLoading }: Props) => {
     const fromMethods = useForm<HotelFormData>();
     const { handleSubmit } = fromMethods;
 
@@ -37,11 +42,13 @@ const ManageHotelForm = () => {
 
         formDataJson.facilities.forEach((facility, index) => {
             formData.append(`facilities[${index}]`, facility)
-        })
+        });
 
         Array.from(formDataJson.imageFiles).forEach((imageFile) => {
             formData.append(`imageFiles`, imageFile);
-        })
+        });
+
+        onSave(formData);
     });
     return (
         <FormProvider {...fromMethods}>
@@ -52,7 +59,7 @@ const ManageHotelForm = () => {
                 <GuestsSection />
                 <ImagesSection />
                 <span className="flex justify-end">
-                    <button type="submit" className="bg-blue-600 text-white p-2 font-bold hover:bg-blue-500 text-xl">Save</button>
+                    <button disabled={isLoading} type="submit" className="bg-blue-600 text-white p-2 font-bold hover:bg-blue-500 text-xl disabled:bg-gray-500">{isLoading ? "Saving..." : "Save"}</button>
                 </span>
             </form>
         </FormProvider>
