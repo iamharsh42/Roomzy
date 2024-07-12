@@ -34,7 +34,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/my-hotels", myHotelRoutes);
 
 app.get("*", (req: Request, res: Response) => {
-    res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
+    res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));  // thsi will redirect the requests to the frontend which are not for backend routes.
 });
 
 app.listen(5000, () => {
