@@ -13,16 +13,16 @@ export type UserType = {
 // mongodb schema for storing user details
 
 const userSchema = new mongoose.Schema({
-    email: {type: String, required: true, unique: true},
-    password: {type: String, required: true},
-    firstName: {type: String, required: true},
-    lastName: {type: String, required: true},
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
 });
 
 // middleware for mongodb to encrypt the password
 
-userSchema.pre("save", async function (next){
-    if(this.isModified('password')){
+userSchema.pre("save", async function (next) {
+    if (this.isModified('password')) {
         this.password = await bcrypt.hash(this.password, 8)
     }
     next();

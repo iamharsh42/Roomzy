@@ -35,7 +35,7 @@ router.post("/", verifyToken, [
 
         const uploadPromises = imageFiles.map(async (image) => {
             const b64 = Buffer.from(image.buffer).toString("base64"); // converts image to base64 string for cloudinary
-            let dataURI = "data:" + image.mimetype + ";base," + 64;
+            let dataURI = "data:" + image.mimetype + ";base," + b64;
             const res = await cloudinary.v2.uploader.upload(dataURI);
             return res.url;
         });
