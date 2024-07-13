@@ -3,7 +3,10 @@ import { HotelFormData } from "./ManageHotelForm"
 
 const ImagesSection = () => {
 
-    const { register, formState: { errors }, } = useFormContext<HotelFormData>();
+    const { register, formState: { errors }, watch } = useFormContext<HotelFormData>();
+
+    const existingImageUrls = watch("imageUrls");
+
     return (
         <div>
             <h2 className="text-2xl font-bold mb-3">Images</h2>
