@@ -119,6 +119,11 @@ export type SearchParams = {
     adultCount?: string;
     childCount?: string;
     page?: string;
+    facilities?: string[];
+    types?: string[];
+    stars?: string[];
+    maxPrice?: string;
+    sortOption?: string;
 };
 
 export const searchHotel = async (searchParams: SearchParams): Promise<HotelSearchResponse> => {
@@ -129,6 +134,14 @@ export const searchHotel = async (searchParams: SearchParams): Promise<HotelSear
     queryParams.append("adultCount", searchParams.adultCount || "");
     queryParams.append("childCount", searchParams.childCount || "");
     queryParams.append("page", searchParams.page || "");
+    queryParams.append("maxPrice", searchParams.maxPrice || "");
+    queryParams.append("sortOption", searchParams.sortOption || "");
+
+    searchParams.facilities?.forEach((facility) => queryParams.append("facilities", facility));
+
+    searchParams.types?.forEach((type) => queryParams.append("types", type));
+
+    searchParams.stars?.forEach((star) => queryParams.append("stars", star));
 
     const response = await fetch(`${API_BASE_URL}/api/hotrls/search?${queryParams}`);
 
