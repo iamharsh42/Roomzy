@@ -1,14 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from 'bcryptjs';
-
-// describes the user type (typescript type)
-export type UserType = {
-    _id: string;
-    email: string;
-    password: string;
-    firstName: string;
-    lastName: string;
-}
+import { UserType } from "../shared/types";
 
 // mongodb schema for storing user details
 
