@@ -2,6 +2,10 @@ import express, { Request, Response } from "express";
 import Hotel from "../models/hotel";
 import { HotelSearchResponse } from "../shared/types";
 import { param, validationResult } from "express-validator";
+import Stripe from "stripe";
+import verifyToken from "../middleware/auth";
+
+const stripe = new Stripe(process.env.STRIPE_API_KEY as string); // initialize a new stripe connection
 
 const router = express.Router();
 
@@ -67,6 +71,18 @@ router.get("/:id", [
         console.log(error);
         res.status(500).json({ message: "Error fetching hotel" });
     }
+})
+
+router.post("/:hotelId/bookings/payment-intent", verifyToken, async (req: Request, res: Response) => {
+    // to create a payment intent, we need 
+    // 1. totalCost
+    // 2. hotelId
+    // 3. userId
+
+    const { numberOfNights } = req.body;
+    const hotelId = req.params.hotelId;
+
+    const hotel = await Hotel.findById(hotelId);
 })
 
 const constructSearchQuery = (queryParams: any) => {
