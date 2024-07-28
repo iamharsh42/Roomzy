@@ -20,6 +20,12 @@ const Booking = () => {
         }
     }, [search.checkIn, search.checkOut]);
 
+    const { data: paymentIntentData } = useQuery("createPaymentIntent", () => apiClient.createPaymentIntent(hotelId as string, numberOfNights.toString()),
+        {
+            enabled: !!hotelId && numberOfNights > 0, // request would only be sent if there is a valid hotelId and the numberOfNights is greater than 0.
+        }
+    );
+
     const { data: hotel } = useQuery("fetchHotelById", () => apiClient.fetchHotelById(hotelId as string), {
         enabled: !!hotelId,
     })
@@ -34,7 +40,7 @@ const Booking = () => {
         <div className="grid md:grid-cols-[1fr_2fr]">
             <BookingDetailSummary checkIn={search.checkIn} checkOut={search.checkOut} adultCount={search.adultCount} childCount={search.childCount} numberOfNights={numberOfNights} hotel={hotel} />
 
-            {currentUser && <BookingForm currentUser={currentUser} />}
+            {currentUser && paymentIntentData && <BookingForm currentUser={currentUser} />}
         </div>
     );
 }
