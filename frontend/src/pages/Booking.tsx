@@ -5,8 +5,11 @@ import { useSearchContext } from "../contexts/SearchContext";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import BookingDetailSummary from "../components/BookingDetailSummary";
+import { Elements } from "@stripe/react-stripe-js";
+import { useAppContext } from "../contexts/AppContext";
 
 const Booking = () => {
+    const { stripePromise } = useAppContext();
     const search = useSearchContext();
     const { hotelId } = useParams();
 
@@ -40,7 +43,12 @@ const Booking = () => {
         <div className="grid md:grid-cols-[1fr_2fr]">
             <BookingDetailSummary checkIn={search.checkIn} checkOut={search.checkOut} adultCount={search.adultCount} childCount={search.childCount} numberOfNights={numberOfNights} hotel={hotel} />
 
-            {currentUser && paymentIntentData && <BookingForm currentUser={currentUser} />}
+            {currentUser && paymentIntentData && (
+                <Elements stripe={stripePromise} options={{
+                    clientSecret: paymentIntentData.clientSecret,
+                }}><BookingForm currentUser={currentUser} paymentIntent={paymentIntentData} /></Elements>
+                // element comes from stripe frontend sdk and gives us acces to some stripe ui components
+            )}
         </div>
     );
 }
