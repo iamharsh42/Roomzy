@@ -1,4 +1,4 @@
-import { useForm, FormProvider } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import DetailsSection from "./DetailsSection";
 import TypeSection from "./TypeSection";
 import FacilitiesSection from "./FacilitiesSection";
@@ -26,15 +26,15 @@ type Props = {
     hotel?: HotelType;
     onSave: (hotelFormData: FormData) => void;
     isLoading: boolean;
-}
+};
 
 const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
-    const fromMethods = useForm<HotelFormData>();
-    const { handleSubmit, reset } = fromMethods;
+    const formMethods = useForm<HotelFormData>();
+    const { handleSubmit, reset } = formMethods;
 
     useEffect(() => {
         reset(hotel);
-    }, [hotel, reset]); // to reset the form with some new data
+    }, [hotel, reset]);
 
     const onSubmit = handleSubmit((formDataJson: HotelFormData) => {
         const formData = new FormData();
@@ -45,14 +45,14 @@ const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
         formData.append("city", formDataJson.city);
         formData.append("country", formDataJson.country);
         formData.append("description", formDataJson.description);
-        formData.append("text", formDataJson.type);
+        formData.append("type", formDataJson.type);
         formData.append("pricePerNight", formDataJson.pricePerNight.toString());
         formData.append("starRating", formDataJson.starRating.toString());
         formData.append("adultCount", formDataJson.adultCount.toString());
         formData.append("childCount", formDataJson.childCount.toString());
 
         formDataJson.facilities.forEach((facility, index) => {
-            formData.append(`facilities[${index}]`, facility)
+            formData.append(`facilities[${index}]`, facility);
         });
 
         if (formDataJson.imageUrls) {
@@ -67,8 +67,9 @@ const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
 
         onSave(formData);
     });
+
     return (
-        <FormProvider {...fromMethods}>
+        <FormProvider {...formMethods}>
             <form className="flex flex-col gap-10" onSubmit={onSubmit}>
                 <DetailsSection />
                 <TypeSection />
@@ -76,11 +77,17 @@ const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
                 <GuestsSection />
                 <ImagesSection />
                 <span className="flex justify-end">
-                    <button disabled={isLoading} type="submit" className="bg-blue-600 text-white p-2 font-bold hover:bg-blue-500 text-xl disabled:bg-gray-500">{isLoading ? "Saving..." : "Save"}</button>
+                    <button
+                        disabled={isLoading}
+                        type="submit"
+                        className="bg-blue-600 text-white p-2 font-bold hover:bg-blue-500 text-xl disabled:bg-gray-500"
+                    >
+                        {isLoading ? "Saving..." : "Save"}
+                    </button>
                 </span>
             </form>
         </FormProvider>
-    )
-}
+    );
+};
 
 export default ManageHotelForm;
