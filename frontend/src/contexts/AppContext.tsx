@@ -1,5 +1,4 @@
-import { useContext, useState } from "react";
-import React from "react";
+import React, { useContext, useState } from "react";
 import Toast from "../components/Toast";
 import { useQuery } from "react-query";
 import * as apiClient from "../api-client";
@@ -10,15 +9,15 @@ const STRIPE_PUB_KEY = import.meta.env.VITE_STRIPE_PUB_KEY || "";
 type ToastMessage = {
     message: string;
     type: "SUCCESS" | "ERROR";
-}
+};
 
 type AppContext = {
     showToast: (toastMessage: ToastMessage) => void;
     isLoggedIn: boolean;
     stripePromise: Promise<Stripe | null>;
-}
+};
 
-const AppContext = React.createContext<AppContext | undefined>(undefined); // created a context with default value "undefined"
+const AppContext = React.createContext<AppContext | undefined>(undefined);
 
 const stripePromise = loadStripe(STRIPE_PUB_KEY);
 
@@ -32,26 +31,30 @@ export const AppContextProvider = ({
     const { isError } = useQuery("validateToken", apiClient.validateToken, {
         retry: false,
     });
+
     return (
-        <AppContext.Provider value={{
-            showToast: (toastMessage) => {
-                setToast(toastMessage);
-            },
-            isLoggedIn: !isError,
-            stripePromise
-        }}>
+        <AppContext.Provider
+            value={{
+                showToast: (toastMessage) => {
+                    setToast(toastMessage);
+                },
+                isLoggedIn: !isError,
+                stripePromise,
+            }}
+        >
             {toast && (
                 <Toast
                     message={toast.message}
                     type={toast.type}
-                    onClose={() => setToast(undefined)} />
+                    onClose={() => setToast(undefined)}
+                />
             )}
             {children}
         </AppContext.Provider>
-    )
-}
+    );
+};
 
 export const useAppContext = () => {
     const context = useContext(AppContext);
     return context as AppContext;
-}
+};

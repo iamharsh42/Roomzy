@@ -17,6 +17,8 @@ export const fetchCurrentUser = async (): Promise<UserType> => {
     return response.json();
 }; // request to fetch existing user
 
+
+
 export const register = async (formdata: RegisterFromData) => {
     const response = await fetch(`${API_BASE_URL}/api/users/register`, {
         method: 'POST',
