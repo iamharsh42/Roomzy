@@ -91,7 +91,7 @@ const Register = () => {
                     )}
                 </label>
                 <span>
-                    <button type="submit" className="bg-blue-600 text-white p-2 font-bold hover:bg-blue-500 text-xl">Create Account</button>
+                    <button type="submit" className="bg-black text-white p-2 font-bold hover:bg-blue-500 text-xl">Create Account</button>
                 </span>
             </form>
         </>
